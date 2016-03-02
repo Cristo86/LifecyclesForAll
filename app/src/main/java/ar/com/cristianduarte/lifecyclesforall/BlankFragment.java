@@ -1,12 +1,15 @@
 package ar.com.cristianduarte.lifecyclesforall;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -28,6 +31,8 @@ public class BlankFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private TextView mTxt;
 
     public BlankFragment() {
         // Required empty public constructor
@@ -58,13 +63,38 @@ public class BlankFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mListener.onFragmentInteraction(null);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mListener.onFragmentInteraction(null);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false);
+        View v =  inflater.inflate(R.layout.fragment_blank, container, false);
+
+        mTxt = (TextView) v.findViewById(R.id.txt);
+
+        if (savedInstanceState != null) {
+            mTxt.setText(savedInstanceState.getCharSequence("txt"));
+        }
+
+        v.findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = 0;
+                try {
+                    i = Integer.valueOf(mTxt.getText().toString());
+                } catch (Exception e) {
+                    // ...
+                }
+                i++;
+                mTxt.setText(""+i);
+            }
+        });
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -83,12 +113,73 @@ public class BlankFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        mListener.onFragmentInteraction(null);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener.onFragmentInteraction(null);
         mListener = null;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(context, attrs, savedInstanceState);
+        if (mListener!=null) mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mListener.onFragmentInteraction(null);
+    }
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mListener.onFragmentInteraction(null);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequence("txt", mTxt.getText());
     }
 
     /**
