@@ -1,17 +1,16 @@
 package ar.com.cristianduarte.lifecyclesforall;
 
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
+import android.view.OrientationEventListener;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements BlankFragment.OnFragmentInteractionListener {
 
     private OnScreenMethodLogger logger;
+    private OrientationEventListener mOrientationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +24,20 @@ public class MainActivity extends AppCompatActivity implements BlankFragment.OnF
         }
 
         logger.log();
+
+        mOrientationListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
+            private Integer lastOrientationLogged = null;
+            public void onOrientationChanged(int orientation) {
+                if (orientation % 90 == 0
+                        && (lastOrientationLogged==null || lastOrientationLogged != orientation)) {
+                    logger.log(String.valueOf(orientation));
+                    lastOrientationLogged = orientation;
+                }
+            }
+        };
+        if (mOrientationListener.canDetectOrientation()) {
+            mOrientationListener.enable();
+        }
     }
 
     @Override
